@@ -1,0 +1,151 @@
+hash: 1ba448c3b89842ef28e0987493658aaf603b646ae558b46d6c1aa962387fc638
+updated: 2018-11-06T23:46:48.950504-05:00
+imports:
+- name: github.com/AISphere/ffdl-commons
+  version: 8a3bd3633adbb45e902fb5fb66442a5deb0b6603
+  repo: https://github.com/sboagibm/ffdl-commons.git
+  subpackages:
+  - config
+  - grpc-health-checker
+  - logger
+  - util
+- name: github.com/alecthomas/units
+  version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
+- name: github.com/fsnotify/fsnotify
+  version: ccc981bf80385c528a65fbfdd49bf2d8da22aa23
+- name: github.com/golang/protobuf
+  version: aa810b61a9c79d51363740d207bb46cf8e620ed5
+  subpackages:
+  - proto
+  - ptypes
+  - ptypes/any
+  - ptypes/duration
+  - ptypes/timestamp
+- name: github.com/hashicorp/hcl
+  version: 65a6292f0157eff210d03ed1bf6c59b190b8b906
+  subpackages:
+  - hcl/ast
+  - hcl/parser
+  - hcl/printer
+  - hcl/scanner
+  - hcl/strconv
+  - hcl/token
+  - json/parser
+  - json/scanner
+  - json/token
+- name: github.com/konsorten/go-windows-terminal-sequences
+  version: 5c8c8bd35d3832f5d134ae1e1e375b69a4d25242
+- name: github.com/magiconair/properties
+  version: c2353362d570a7bfa228149c62842019201cfb71
+- name: github.com/mailru/easyjson
+  version: 60711f1a8329503b04e1c88535f419d0bb440bff
+  subpackages:
+  - buffer
+  - jlexer
+  - jwriter
+- name: github.com/mitchellh/mapstructure
+  version: 3536a929edddb9a5b34bd6861dc4a9647cb459fe
+- name: github.com/olivere/elastic
+  version: d535d95d8c56ed3561d3dbd2e27f855b369233a3
+  subpackages:
+  - config
+  - uritemplates
+- name: github.com/pelletier/go-toml
+  version: 81a861c69d25a841d0c4394f0e6f84bc8c5afae0
+- name: github.com/pkg/errors
+  version: 059132a15dd08d6704c67711dae0cf35ab991756
+- name: github.com/sirupsen/logrus
+  version: ad15b42461921f1fb3529b058c6786c6a45d5162
+- name: github.com/spf13/afero
+  version: d40851caa0d747393da1ffb28f7f9d8b4eeffebd
+  subpackages:
+  - mem
+- name: github.com/spf13/cast
+  version: 8c9545af88b134710ab1cd196795e7f2388358d7
+- name: github.com/spf13/cobra
+  version: ef82de70bb3f60c65fb8eebacbb2d122ef517385
+  subpackages:
+  - cobra/cobra
+- name: github.com/spf13/jwalterweatherman
+  version: 94f6ae3ed3bceceafa716478c5fbf8d29ca601a1
+- name: github.com/spf13/pflag
+  version: 583c0c0531f06d5278b7d917446061adc344b5cd
+- name: github.com/spf13/viper
+  version: 2c12c60302a5a0e62ee102ca9bc996277c2f64f5
+- name: golang.org/x/crypto
+  version: e4dc69e5b2fd71dcaf8bd5d054eb936deb78d1fa
+  subpackages:
+  - ssh/terminal
+- name: golang.org/x/net
+  version: 10aee181995363b41f712a55844a0dd52ea04646
+  subpackages:
+  - context
+  - http/httpguts
+  - http2
+  - http2/hpack
+  - idna
+  - internal/timeseries
+  - trace
+- name: golang.org/x/sys
+  version: 3a76605856fddce5718553cbb8bd50ca492a7274
+  subpackages:
+  - unix
+  - windows
+- name: golang.org/x/text
+  version: 6f44c5a2ea40ee3593d98cdcc905cc1fdaa660e2
+  subpackages:
+  - secure/bidirule
+  - transform
+  - unicode/bidi
+  - unicode/norm
+- name: google.golang.org/genproto
+  version: c830210a61dfaa790e1920f8d0470fc27bc2efbe
+  subpackages:
+  - googleapis/rpc/status
+- name: google.golang.org/grpc
+  version: 2e463a05d100327ca47ac218281906921038fd95
+  subpackages:
+  - balancer
+  - balancer/base
+  - balancer/roundrobin
+  - codes
+  - connectivity
+  - credentials
+  - encoding
+  - encoding/proto
+  - grpclog
+  - health
+  - health/grpc_health_v1
+  - internal
+  - internal/backoff
+  - internal/channelz
+  - internal/envconfig
+  - internal/grpcrand
+  - internal/transport
+  - keepalive
+  - metadata
+  - naming
+  - peer
+  - resolver
+  - resolver/dns
+  - resolver/passthrough
+  - stats
+  - status
+  - tap
+- name: gopkg.in/olivere/elastic.v5
+  version: 4982266e48e0dc5c639e389b50221dcef09cdc99
+- name: gopkg.in/yaml.v2
+  version: 5420a8b6744d3b0345ab293f6fcba19c978f1183
+testImports:
+- name: github.com/davecgh/go-spew
+  version: d8f796af33cc11cb798c1aaeb27a4ebc5099927d
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: 792786c7400a136282c1664665ae0a8db921c6c2
+  subpackages:
+  - difflib
+- name: github.com/stretchr/testify
+  version: f35b8ab0b5a2cef36673838d662e249dd9c94686
+  subpackages:
+  - assert

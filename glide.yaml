@@ -1,0 +1,39 @@
+package: github.com/AISphere/ffdl-model-metrics
+ignore:
+- github.com/AISphere/ffdl-metrics
+- github.com/AISphere/ffdl-commons/service
+import:
+- package: github.com/AISphere/ffdl-commons
+  version: proto-only-depend
+  repo: https://github.com/sboagibm/ffdl-commons.git
+  subpackages:
+  - config
+  - logger
+  - util
+  - grpc-health-checker
+- package: github.com/golang/protobuf
+  version: ^1.2.0
+  subpackages:
+  - proto
+- package: github.com/sirupsen/logrus
+  version: v1.1.1
+- package: github.com/spf13/cobra
+  version: ^0.0.3
+  subpackages:
+  - cobra/cobra
+- package: github.com/spf13/pflag
+  version: 583c0c0531f06d5278b7d917446061adc344b5cd
+- package: github.com/spf13/viper
+  version: ^1.2.1
+- package: golang.org/x/net
+  subpackages:
+  - context
+- package: google.golang.org/grpc
+  version: ^1.16.0
+- package: gopkg.in/olivere/elastic.v5
+  version: ^6.2.12
+testImport:
+- package: github.com/stretchr/testify
+  version: ^1.2.2
+  subpackages:
+  - assert

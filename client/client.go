@@ -26,11 +26,11 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"github.com/AISphere/ffdl-metrics/service/grpc_training_data_v1"
+	"github.com/AISphere/ffdl-model-metrics/service/grpc_training_data_v1"
 	"google.golang.org/grpc"
 
 	"github.com/AISphere/ffdl-commons/logger"
-	// "github.com/AISphere/ffdl-metrics/service"
+	// "github.com/AISphere/ffdl-model-metrics/service"
 )
 
 const (
