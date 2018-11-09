@@ -18,10 +18,10 @@ DOCKER_IMG_NAME = training-data-service
 
 include ../ffdl-commons/ffdl-commons.mk
 
-protoc: protoc-trainer protoc-lcm
+protoc: protoc-trainer protoc-lcm      ## Build gRPC .proto files into vendor directory
 
-install-deps: install-deps-base protoc
+install-deps: install-deps-base protoc ## Remove vendor directory, rebuild dependencies
 
-docker-build: docker-build-base
+docker-build: docker-build-base        ## Install dependencies if vendor folder is missing, build go code, build docker image.
 
-clean: clean-base
+clean: clean-base                      ## clean all build artifacts
