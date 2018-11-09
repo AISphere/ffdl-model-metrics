@@ -1,8 +1,8 @@
 hash: 1ba448c3b89842ef28e0987493658aaf603b646ae558b46d6c1aa962387fc638
-updated: 2018-11-06T23:46:48.950504-05:00
+updated: 2018-11-07T22:43:23.386751-05:00
 imports:
 - name: github.com/AISphere/ffdl-commons
-  version: 8a3bd3633adbb45e902fb5fb66442a5deb0b6603
+  version: 7cf27e963e277f5be312e36f005ff5f2ad477a9b
   repo: https://github.com/sboagibm/ffdl-commons.git
   subpackages:
   - config
@@ -38,7 +38,7 @@ imports:
 - name: github.com/magiconair/properties
   version: c2353362d570a7bfa228149c62842019201cfb71
 - name: github.com/mailru/easyjson
-  version: 60711f1a8329503b04e1c88535f419d0bb440bff
+  version: 2f5df55504ebc322e4d52d34df6a1f5b503bf26d
   subpackages:
   - buffer
   - jlexer
@@ -73,33 +73,33 @@ imports:
 - name: github.com/spf13/viper
   version: 2c12c60302a5a0e62ee102ca9bc996277c2f64f5
 - name: golang.org/x/crypto
-  version: e4dc69e5b2fd71dcaf8bd5d054eb936deb78d1fa
+  version: 4d3f4d9ffa16a13f451c3b2999e9c49e9750bf06
   subpackages:
   - ssh/terminal
 - name: golang.org/x/net
-  version: 10aee181995363b41f712a55844a0dd52ea04646
+  version: 66aacef3dd8a676686c7ae3716979581e8b03c47
   subpackages:
   - context
-  - http/httpguts
   - http2
   - http2/hpack
   - idna
   - internal/timeseries
+  - lex/httplex
   - trace
 - name: golang.org/x/sys
-  version: 3a76605856fddce5718553cbb8bd50ca492a7274
+  version: 1c9583448a9c3aa0f9a6a5241bf73c0bd8aafded
   subpackages:
   - unix
   - windows
 - name: golang.org/x/text
-  version: 6f44c5a2ea40ee3593d98cdcc905cc1fdaa660e2
+  version: b19bf474d317b857955b12035d2c5acb57ce8b01
   subpackages:
   - secure/bidirule
   - transform
   - unicode/bidi
   - unicode/norm
 - name: google.golang.org/genproto
-  version: c830210a61dfaa790e1920f8d0470fc27bc2efbe
+  version: 09f6ed296fc66555a25fe4ce95173148778dfa85
   subpackages:
   - googleapis/rpc/status
 - name: google.golang.org/grpc
@@ -138,11 +138,11 @@ imports:
   version: 5420a8b6744d3b0345ab293f6fcba19c978f1183
 testImports:
 - name: github.com/davecgh/go-spew
-  version: d8f796af33cc11cb798c1aaeb27a4ebc5099927d
+  version: 782f4967f2dc4564575ca782fe2d04090b5faca8
   subpackages:
   - spew
 - name: github.com/pmezard/go-difflib
-  version: 792786c7400a136282c1664665ae0a8db921c6c2
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
   subpackages:
   - difflib
 - name: github.com/stretchr/testify
