@@ -24,4 +24,6 @@ install-deps: install-deps-base protoc ## Remove vendor directory, rebuild depen
 
 docker-build: docker-build-base        ## Install dependencies if vendor folder is missing, build go code, build docker image.
 
+docker-push: docker-push-base          ## Push docker image to a docker hub
+
 clean: clean-base                      ## clean all build artifacts
