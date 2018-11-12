@@ -24,9 +24,8 @@ import (
 
 	"github.com/AISphere/ffdl-commons/config"
 	"github.com/AISphere/ffdl-commons/logger"
-	"github.com/AISphere/ffdl-commons/service"
 	"golang.org/x/net/context"
-	tds "github.com/AISphere/ffdl-metrics/service/grpc_training_data_v1"
+	tds "github.com/AISphere/ffdl-model-metrics/service/grpc_training_data_v1"
 	es "gopkg.in/olivere/elastic.v5"
 	"github.com/spf13/viper"
 	"encoding/json"
@@ -98,14 +97,14 @@ var (
 // Service represents the functionality of the training status service
 type Service interface {
 	tds.TrainingDataServer
-	service.LifecycleHandler
+	LifecycleHandler
 }
 
 // TrainingDataService holds the in-memory service context.
 type TrainingDataService struct {
 	es  *es.Client
 	esBulkProcessor *es.BulkProcessor
-	service.Lifecycle
+	Lifecycle
 }
 
 func makeDebugLogger(logrr *logrus.Entry, isEnabled bool) *logger.LocLoggingEntry {
