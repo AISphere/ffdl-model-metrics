@@ -26,4 +26,10 @@ docker-build: docker-build-base        ## Install dependencies if vendor folder 
 
 docker-push: docker-push-base          ## Push docker image to a docker hub
 
-clean: clean-base                      ## clean all build artifacts
+clean: clean-base                      ## Clean all build artifacts
+
+log-collectors:                        ## Make all log-collectors
+	$(MAKE) -C ./log_collectors all
+
+log-collectors-imagename:              ## Show imagenames of all log-collectors
+	$(MAKE) -C ./log_collectors imagename
