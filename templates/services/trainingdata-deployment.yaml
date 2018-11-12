@@ -19,6 +19,10 @@ spec:
         environment: {{.Values.env}}
         version: {{.Values.trainingdata.version}}
     spec:
+      volumes:
+      - name: ssl-certificates
+        secret:
+          secretName: service-ssl-certificates
 {{ if ne .Values.env "dev" }}
       - name: "elasticsearch-ssl-cert"
         secret:
@@ -30,7 +34,7 @@ spec:
 {{ end }}
       containers:
       - name: ffdl-trainingdata-container
-        image: {{.Values.docker.registry}}/{{.Values.docker.namespace}}/{{.Values.docker.image_prefix}}metrics:{{.Values.trainingdata.version}}
+        image: {{.Values.docker.registry}}/{{.Values.docker.namespace}}/{{.Values.trainingdata.image_name}}:{{.Values.trainingdata.version}}
 {{ if .Values.docker.pullPolicy }}
         imagePullPolicy: {{.Values.docker.pullPolicy}}
 {{ end }}
@@ -68,6 +72,9 @@ spec:
               key: DLAAS_ELASTICSEARCH_PASSWORD
 {{ end }}
         volumeMounts:
+        - mountPath: /etc/ssl/dlaas
+          name: ssl-certificates
+          readOnly: true
 {{ if ne .Values.env "dev" }}
         - name: elasticsearch-ssl-cert
           mountPath: /etc/certs/
@@ -80,7 +87,7 @@ spec:
             cpu: {{.Values.trainingdata.cpus}}
             memory: {{.Values.trainingdata.memory}}
       imagePullSecrets:
-      - name: regcred
+      - name: {{.Values.docker.imagePullSecret}}
 #        livenessProbe:
 #          exec:
 #            command:
