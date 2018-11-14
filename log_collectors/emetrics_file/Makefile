@@ -14,29 +14,8 @@
 # limitations under the License.
 #
 
+DOCKER_IMG_NAME := emetrics_file_extractor
 
-REPO ?= docker.io/ffdl
-GRPC_GIT=git@github.ibm.com:deep-learning-platform/grpc-parameter-server.git
-WHOAMI ?= $(shell whoami)
-IMAGE_TAG ?= user-$(WHOAMI)
+include ../../../ffdl-commons/ffdl-commons.mk
 
-IMAGE_NAME?=${REPO}/emetrics_file_extractor:${IMAGE_TAG}
-
-DOCKER_OPTIONS ?=
-
-all: build push
-
-build:
-	echo "Building ${IMAGE_NAME}"
-	cp -r ../training_data_service_client .
-	docker build -q ${DOCKER_OPTIONS} -t ${IMAGE_NAME} -f Dockerfile .
-	rm -r training_data_service_client
-	echo "Success building ${IMAGE_NAME}"
-
-push:
-	echo "Pushing ${IMAGE_NAME}"
-	docker push ${IMAGE_NAME}
-
-imagename:
-	echo $(IMAGE_NAME)
-	echo "Docker options: ${DOCKER_OPTIONS}"
+include ../log-collectors.mk

@@ -22,14 +22,18 @@ protoc: protoc-trainer protoc-lcm      ## Build gRPC .proto files into vendor di
 
 install-deps: install-deps-base protoc ## Remove vendor directory, rebuild dependencies
 
-docker-build: docker-build-base        ## Install dependencies if vendor folder is missing, build go code, build docker image.
+log-collectors:                        ## Make all log-collectors
+	$(MAKE) -C ./log_collectors/emetrics_file build
+	$(MAKE) -C ./log_collectors/regex_extractor build
+	$(MAKE) -C ./log_collectors/simple_log_collector build
+	$(MAKE) -C ./log_collectors/simple_log_collector build
+
+docker-build-service: docker-build-base        ## Install deps if needed, build go code and docker image
+
+docker-build: docker-build-service log-collectors        ## Install deps if needed, build go docker, log-collectors.
 
 docker-push: docker-push-base          ## Push docker image to a docker hub
 
+build-service-only: docker-build-service docker-push  ## Only build service, not log-collectors
+
 clean: clean-base                      ## Clean all build artifacts
-
-log-collectors:                        ## Make all log-collectors
-	$(MAKE) -C ./log_collectors all
-
-log-collectors-imagename:              ## Show imagenames of all log-collectors
-	$(MAKE) -C ./log_collectors imagename
