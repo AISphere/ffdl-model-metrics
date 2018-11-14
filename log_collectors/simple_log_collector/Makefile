@@ -14,25 +14,8 @@
 # limitations under the License.
 #
 
-REPO ?= docker.io/ffdl
-GRPC_GIT=git@github.ibm.com:deep-learning-platform/grpc-parameter-server.git
-WHOAMI ?= $(shell whoami)
-IMAGE_TAG ?= user-$(WHOAMI)
+DOCKER_IMG_NAME := log_collector
 
-IMAGE_NAME?=${REPO}/log_collector:${IMAGE_TAG}
+include ../../../ffdl-commons/ffdl-commons.mk
 
-all: build push
-
-DOCKER_OPTIONS ?=
-
-build:
-	cp -r ../training_data_service_client .
-	docker build -q ${DOCKER_OPTIONS} -t ${REPO}/log_collector:${IMAGE_TAG} -f Dockerfile .
-	rm -r training_data_service_client
-
-push:
-	docker push ${REPO}/log_collector:${IMAGE_TAG}
-
-imagename:
-	echo $(IMAGE_NAME)
-	echo "Docker options: ${DOCKER_OPTIONS}"
+include ../log-collectors.mk

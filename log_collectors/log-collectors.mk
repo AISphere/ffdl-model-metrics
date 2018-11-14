@@ -14,8 +14,21 @@
 # limitations under the License.
 #
 
-DOCKER_IMG_NAME := tensorboard_extract
+protoc:      ## Build gRPC .proto files into vendor directory
+	$(NOOP)
 
-include ../../../ffdl-commons/ffdl-commons.mk
+install-deps:  ## Remove vendor directory, rebuild dependencies
+	$(NOOP)
 
-include ../log-collectors.mk
+copy-local-tds-client:
+	cp -r ../training_data_service_client .
+	cp -r ../../certs training_data_service_client/
+
+uncopy-local-tds-client:
+	cp -r ../training_data_service_client .
+
+docker-build: copy-local-tds-client docker-build-only uncopy-local-tds-client
+
+docker-push: docker-push-base          ## Push docker image to a docker hub
+
+clean: clean-base                      ## Clean all build artifacts
