@@ -21,7 +21,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/AISphere/ffdl-commons/config"
 	"github.com/AISphere/ffdl-commons/logger"
-	"github.com/AISphere/ffdl-metrics/client"
+	"github.com/AISphere/ffdl-model-metrics/client"
 	"github.com/AISphere/ffdl-model-metrics/service/grpc_training_data_v1"
 	"testing"
 	"context"

@@ -504,7 +504,7 @@ func (c *TrainingDataService) GetEMetrics(in *tds.Query, stream tds.TrainingData
 				logr.WithError(err).Errorf("Unmarshal from ES failed!")
 				return err
 			}
-			dlogr.Debugf("Sending record with rindex %d, time %s",
+			dlogr.Debugf("Sending record with rindex %d, time %v",
 				emetricsRecord.Meta.Rindex,
 					emetricsRecord.Meta.Time)
 
@@ -949,7 +949,7 @@ func createIndexWithLogsIfDoesNotExist(ctx context.Context, client *es.Client) e
 			if err != nil {
 				logr.WithError(err).Debugf("Reindex from %s to %s failed", indexNameV1, indexNameV2)
 			}
-			logr.Infof("Reindex of %ld documents took %ld",
+			logr.Infof("Reindex of %v documents took %v",
 				res.Total, res.Took)
 
 			logr.Infof("deleting index %s", indexNameV1)
