@@ -8,6 +8,6 @@ entries:
     icon: https://raw.githubusercontent.com/AISphere/ffdl-dashboard/master/web-gui/src/assets/img/ffdl.png
     name: ffdl-model-metrics
     urls:
-    - https://aisphere.github.io/ffdl-model-metrics/ffdl-model-metrics-0.1.1.tgz
+    - https://aisphere.github.io/ffdl-model-metrics/helm/ffdl-model-metrics-0.1.1.tgz
     version: 0.1.1
 generated: 2019-01-11T16:03:44.267195-08:00
