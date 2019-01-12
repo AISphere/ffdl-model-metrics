@@ -1,0 +1,5 @@
+name: ffdl-model-metrics
+description: FfDL training data service
+version: 0.1.1
+appVersion: 3.3
+icon: https://raw.githubusercontent.com/AISphere/ffdl-dashboard/master/web-gui/src/assets/img/ffdl.png
