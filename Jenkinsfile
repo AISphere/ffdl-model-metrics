@@ -144,9 +144,6 @@ pipeline {
                         withDockerServer([uri: "unix:///var/run/docker.sock"]) {
                             withDockerRegistry([credentialsId: "${env.DOCKERHUB_CREDENTIALS_ID}",
                                                 url: "https://registry.ng.bluemix.net"]) {
-                                // withEnv(["DLAAS_IMAGE_TAG=${env.JOB_BASE_NAME}"]) {
-                                //    sh "docker push \"${env.DOCKERHUB_HOST}/$DOCKER_NAMESPACE/$DOCKER_IMG_NAME:$DLAAS_IMAGE_TAG\""
-                                // }
                                 withEnv(["DLAAS_IMAGE_TAG=${env.JOB_BASE_NAME}",
                                          "DOCKER_HOST=${env.DOCKERHUB_HOST}",
                                          "DOCKER_NAMESPACE=$DOCKER_NAMESPACE", "DOCKER_IMG_NAME=$DOCKER_IMG_NAME"]) {
