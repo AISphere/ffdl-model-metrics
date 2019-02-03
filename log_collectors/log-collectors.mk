@@ -22,7 +22,6 @@ install-deps:  ## Remove vendor directory, rebuild dependencies
 
 copy-local-tds-client:
 	cp -r ../training_data_service_client .
-	cp -r ../../certs training_data_service_client/
 
 uncopy-local-tds-client:
 	cp -r ../training_data_service_client .
