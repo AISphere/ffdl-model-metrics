@@ -1,8 +1,8 @@
-hash: 1ba448c3b89842ef28e0987493658aaf603b646ae558b46d6c1aa962387fc638
-updated: 2019-02-03T11:00:33.884864-05:00
+hash: f388d07a8e9f069ab827e9879bf57d01d68c214c8d5ff3a5b564f4940b873600
+updated: 2019-02-03T11:10:29.436546-05:00
 imports:
 - name: github.com/AISphere/ffdl-commons
-  version: 71325c5701ed9dd0ba27beebfdc40f153ac7f97c
+  version: 64478df82b02fdb8bce6674cf822cd581655d427
   repo: https://github.com/sboagibm/ffdl-commons.git
   subpackages:
   - config
