@@ -31,11 +31,9 @@ RUN pip3 install awscli
 RUN mkdir -p /scripts
 RUN mkdir -p /scripts/log_collectors
 RUN mkdir -p /scripts/log_collectors/training_data_service_client
-RUN mkdir -p /scripts/log_collectors/training_data_service_client/certs
 
 ADD src/*.* /scripts/
 ADD training_data_service_client/*.* /scripts/log_collectors/training_data_service_client/
-ADD training_data_service_client/certs/*.* /scripts/log_collectors/training_data_service_client/certs/
 
 # ENV PYTHONPATH /usr/local/lib/python3.5/dist-packages:/tensorflow:/usr/local/lib/python3.5/dist-packages/tensorboard:/tensorflow/third_party/py
 # ENV TENSORFLOWVERSION 1.5
