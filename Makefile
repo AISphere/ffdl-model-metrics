@@ -26,7 +26,7 @@ log-collectors:                        ## Make all log-collectors
 	$(MAKE) -C ./log_collectors/emetrics_file build
 	$(MAKE) -C ./log_collectors/regex_extractor build
 	$(MAKE) -C ./log_collectors/simple_log_collector build
-	$(MAKE) -C ./log_collectors/simple_log_collector build
+	$(MAKE) -C ./log_collectors/tensorboard build
 
 docker-build-service: docker-build-base        ## Install deps if needed, build go code and docker image
 
