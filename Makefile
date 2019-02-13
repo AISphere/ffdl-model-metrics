@@ -45,3 +45,4 @@ docker-push: docker-push-base  docker-push-log-collectors        ## Push docker 
 build-service-only: docker-build-service docker-push  ## Only build service, not log-collectors
 
 clean: clean-base                      ## Clean all build artifacts
+	rm -rf certs
