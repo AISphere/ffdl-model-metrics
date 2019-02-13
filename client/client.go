@@ -79,7 +79,7 @@ func NewTrainingDataClientWithAddress(addr string) (TrainingDataClient, error) {
 		address = addr
 		logr.Debugf("DNS disabled: Running passed in address: %v", address)
 	} else {
-		address = fmt.Sprintf("%s.%s.svc.cluster.local:80", config.GetValue(config.TdsServiceName), config.GetPodNamespace())
+		address = fmt.Sprintf("%s.%s.svc.cluster.local:80", config.GetTDSServiceName(), config.GetPodNamespace())
 		logr.Debugf("ffdl-trainingdata address: %v", address)
 	}
 	logr.Debugf("IsTLSEnabled: %t", config.IsTLSEnabled())

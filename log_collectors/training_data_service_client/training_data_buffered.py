@@ -41,7 +41,8 @@ class TrainingDataClientBuffered(object):
     buffer_lock = threading.Lock()
     other_tdcb_instances = []   # type: List[TrainingDataClientBuffered]
 
-    def __init__(self, td_client: td.TrainingDataStub, em_file_path: str=None):
+    def __init__(self, td_client: td.TrainingDataStub,
+                 em_file_path: str=None, em2_file_path: str=mlf.EMETRICS2_FILE_BASE_NAME):
         """Constructor.
 
         Args:
@@ -51,6 +52,7 @@ class TrainingDataClientBuffered(object):
 
         self.td_client = td_client
         self.em_file_path = em_file_path
+        self.em2_file_path = em2_file_path
 
         # Buffer for what should go into this instances emetrics file
         self.emetrics_file_buf = []   # type: tdp.EMetrics
@@ -60,6 +62,7 @@ class TrainingDataClientBuffered(object):
         self.logger.info("Creating TrainingDataClientBuffered")
 
         self.last_em_file_size = 0
+        self.last_em2_file_size = 0
 
         with TrainingDataClientBuffered.buffer_lock:
             if em_file_path is not None:
@@ -69,15 +72,63 @@ class TrainingDataClientBuffered(object):
                         raise Exception("only ONE EM writer per process")
             TrainingDataClientBuffered.other_tdcb_instances.append(self)
 
-    def set_em_file_path(self, em_file_path: str):
+    def set_em_file_path(self, em_file_path: str, em2_file_path: str=None):
         # Locks are probably overkill, but ensures we're safe
         with TrainingDataClientBuffered.buffer_lock:
             self.logger.info("Setting the em file path: %s", em_file_path)
             self.em_file_path = em_file_path
 
+            if em2_file_path is not None:
+                self.em2_file_path = em2_file_path
+            else:
+                self.em2_file_path = os.path.join(os.path.dirname(em_file_path), mlf.EMETRICS2_FILE_BASE_NAME)
+                self.logger.info("Setting the em2 file path: %s", self.em2_file_path)
+
+
     def __should_flush(self, buf: [], buf_start_add_time: float):
         return len(buf) >= self.CONST_FLUSH_NUMBER_RECORDS or \
                (time.time() - buf_start_add_time) > self.CONST_FLUSH_TIME
+
+    def __write_em_file_path2(self, ver: int, lines_written, last_em_file_size: int, em_file_path: str)->(int,int):
+        self.logger.info("writing %d records to %s, thread index %d",
+                         len(self.emetrics_file_buf), em_file_path, threading.get_ident())
+
+        # The lines below with "Flush nfs buffer??" are about trying to make sure the nfs cache is flushed.
+        # The result of a long struggle, there's probably a better way.
+
+        if last_em_file_size > 0:
+            # Flush nfs buffer??
+            if not os.path.exists(em_file_path):
+                self.logger.error("file was created, but now it doesn't exist!!! %s", self.em_file_path)
+
+        with open(file=em_file_path,  mode='a', buffering=-1) as em_stream:
+            for emetrics in self.emetrics_file_buf:
+                try:
+                    if ver == 1:
+                        json_form = print_json.to_string(emetrics)
+                    elif ver == 2:
+                        json_form = em2em2.transform(emetrics)
+                    em_stream.write(json_form)
+                    em_stream.write("\n")
+                    lines_written += 1
+                except OSError as err:
+                    self.logger.warning("Unexpected error writing emetrics file: %s", err)
+
+        # Please keep this in place for now for debugging.
+        # # if force:
+        # Flush nfs buffer??
+        fd = os.open(em_file_path, os.O_RDONLY)
+        after_stat = os.fstat(fd)
+        os.close(fd)
+
+        if after_stat.st_size <= last_em_file_size:
+            self.logger.error("what?: file grew smaller! b: %d, a: %d",
+                              last_em_file_size, after_stat.st_size)
+
+        last_em_file_size = after_stat.st_size
+
+        return lines_written, last_em_file_size
+
 
     def __write_em_file_path(self, force: bool=False):
         # The force flag is sent by the caller, which is sent by someone else,
@@ -86,46 +137,19 @@ class TrainingDataClientBuffered(object):
         del force
 
         if self.em_file_path is not None and len(self.emetrics_file_buf):
-            lines_written = 0
+            lines2_written = 0
             try:
-                self.logger.info("writing %d records to %s, thread index %d",
-                                  len(self.emetrics_file_buf), self.em_file_path, threading.get_ident())
 
-                # The lines below with "Flush nfs buffer??" are about trying to make sure the nfs cache is flushed.
-                # The result of a long struggle, there's probably a better way.
+                _, self.last_em_file_size = \
+                    self.__write_em_file_path2(1, 0, self.last_em_file_size, self.em_file_path)
 
-                if self.last_em_file_size > 0:
-                    # Flush nfs buffer??
-                    if not os.path.exists(self.em_file_path):
-                        self.logger.error("file was created, but now it doesn't exist!!! %s", self.em_file_path)
-
-                with open(file=self.em_file_path,  mode='a', buffering=-1) as em_stream:
-                    for emetrics in self.emetrics_file_buf:
-                        try:
-                            json_form = print_json.to_string(emetrics)
-                            em_stream.write(json_form)
-                            em_stream.write("\n")
-                            lines_written += 1
-                        except OSError as err:
-                            self.logger.warning("Unexpected error writing emetrics file: %s", err)
-
-                # Please keep this in place for now for debugging.
-                # # if force:
-                # Flush nfs buffer??
-                fd = os.open(self.em_file_path, os.O_RDONLY)
-                after_stat = os.fstat(fd)
-                os.close(fd)
-
-                if after_stat.st_size <= self.last_em_file_size:
-                    self.logger.error("what?: file grew smaller! b: %d, a: %d",
-                                      self.last_em_file_size, after_stat.st_size)
-
-                self.last_em_file_size = after_stat.st_size
+                lines2_written, self.last_em2_file_size = \
+                    self.__write_em_file_path2(2, lines2_written, self.last_em2_file_size, self.em2_file_path)
 
             except OSError as error:  # parent of IOError, OSError *and* WindowsError where available
                 self.logger.warning("Unexpected error opening emetrics file: %s", error)
             finally:
-                self.emetrics_file_buf = self.emetrics_file_buf[lines_written:]
+                self.emetrics_file_buf = self.emetrics_file_buf[lines2_written:]
 
     def __add_emetrics_with_retry(self, force: bool=False)->bool:
         success = False

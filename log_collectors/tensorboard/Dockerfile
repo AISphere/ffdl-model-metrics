@@ -18,15 +18,12 @@
 FROM tensorflow/tensorflow:1.5.0-py3
 LABEL maintainer="Scott Boag <scott_boag@us.ibm.com>"
 
-RUN apt-get update && apt-get install -y --no-install-recommends cron
-
 #install Keras
 RUN pip3 install keras h5py tensor2tensor
 
 RUN pip3 install --upgrade pip
 RUN pip3 install -U setuptools
 RUN pip3 install grpcio==1.7.3 python-dateutil pyyaml
-RUN pip3 install awscli
 
 RUN mkdir -p /scripts
 RUN mkdir -p /scripts/log_collectors
@@ -35,8 +32,8 @@ RUN mkdir -p /scripts/log_collectors/training_data_service_client
 ADD src/*.* /scripts/
 ADD training_data_service_client/*.* /scripts/log_collectors/training_data_service_client/
 
-# ENV PYTHONPATH /usr/local/lib/python3.5/dist-packages:/tensorflow:/usr/local/lib/python3.5/dist-packages/tensorboard:/tensorflow/third_party/py
-# ENV TENSORFLOWVERSION 1.5
-# ENV PYTHONVERSION 3.5
+ENV PYTHONPATH /usr/local/lib/python3.5/dist-packages:/tensorflow:/usr/local/lib/python3.5/dist-packages/tensorboard:/tensorflow/third_party/py
+ENV TENSORFLOWVERSION 1.5
+ENV PYTHONVERSION 3.5
 
 WORKDIR /scripts

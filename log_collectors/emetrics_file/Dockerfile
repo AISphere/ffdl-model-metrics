@@ -39,8 +39,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     make \
     musl-dev \
     "python3.6" \
-    python3-pip \
-	cron
+    python3-pip
 
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 3
@@ -49,7 +48,6 @@ RUN update-alternatives --config python3
 
 RUN pip3 install --upgrade pip
 RUN pip3 install grpcio==1.7.3 python-dateutil
-RUN pip3 install awscli
 
 # make some useful symlinks that are expected to exist
 RUN cd /usr/local/bin \
