@@ -22,6 +22,8 @@ protoc: protoc-trainer protoc-lcm      ## Build gRPC .proto files into vendor di
 
 install-deps: install-deps-base protoc ## Remove vendor directory, rebuild dependencies
 
+glide-update: glide-update-base        ## Run full glide rebuild
+
 docker-build-log-collectors:                        ## Make docker-build for all log-collectors
 	$(MAKE) -C ./log_collectors/emetrics_file docker-build
 	$(MAKE) -C ./log_collectors/regex_extractor docker-build
