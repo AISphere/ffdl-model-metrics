@@ -7,7 +7,7 @@ from log_collectors.training_data_service_client import training_data_pb2_grpc a
 
 
 def get_connection()->td.TrainingDataStub:
-    with open('log_collectors/training_data_service_client/certs/server.crt') as f:
+    with open('/etc/ssl/dlaas/server.crt') as f:
         certificate = f.read()
 
     credentials = grpc.ssl_channel_credentials(root_certificates=certificate)
