@@ -11,6 +11,8 @@ from log_collectors.training_data_service_client import print_json
 
 from log_collectors.training_data_service_client import training_data_pb2_grpc as td
 from log_collectors.training_data_service_client import training_data_pb2 as tdp
+from log_collectors.training_data_service_client import emetrics_to_emetrics2 as em2em2
+from log_collectors.training_data_service_client import match_log_file as mlf
 
 
 class TrainingDataClientBuffered(object):

@@ -22,24 +22,24 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
 	"github.com/AISphere/ffdl-commons/config"
 	"github.com/AISphere/ffdl-commons/logger"
 	"github.com/AISphere/ffdl-lcm/service"
-	tds "github.com/AISphere/ffdl-model-metrics/service/grpc_training_data_v1"
-	"github.com/spf13/viper"
 	"golang.org/x/net/context"
+	tds "github.com/AISphere/ffdl-model-metrics/service/grpc_training_data_v1"
 	es "gopkg.in/olivere/elastic.v5"
+	"github.com/spf13/viper"
+	"encoding/json"
+	"crypto/tls"
 	"strings"
+	"fmt"
 	"time"
 )
 
 const (
-	indexName   = "tds_index" // New alias
-	indexNameV1 = "dlaas_learner_data"
-	indexNameV2 = "dlaas_learner_data_v2"
+	indexName          = "tds_index"  // New alias
+	indexNameV1       = "dlaas_learner_data"
+	indexNameV2       = "dlaas_learner_data_v2"
 
 	//"time" : { "type": "date", "format": "epoch_millis" },
 	metaSubRecord = `"meta" : {
@@ -52,7 +52,7 @@ const (
 		}
 	}`
 
-	docTypeLog       = "logline"
+	docTypeLog      = "logline"
 	indexMappingLogs = `{
                             "logline" : {
                                 "properties" : {
@@ -74,10 +74,11 @@ const (
 	// TODO: How to represent etimes and values maps?  For now, dynamic construction seems to be ok.
 
 	elasticSearchAddressKey = "elasticsearch.address"
-	elasticSearchUserKey    = "elasticsearch.username"
-	elasticSearchPwKey      = "elasticsearch.password"
+	elasticSearchUserKey = "elasticsearch.username"
+	elasticSearchPwKey = "elasticsearch.password"
 
 	defaultPageSize = 10
+
 )
 
 var (
@@ -102,7 +103,7 @@ type Service interface {
 
 // TrainingDataService holds the in-memory service context.
 type TrainingDataService struct {
-	es              *es.Client
+	es  *es.Client
 	esBulkProcessor *es.BulkProcessor
 	service.Lifecycle
 }
@@ -135,7 +136,7 @@ func NewService() Service {
 
 	transport := http.Transport{
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
+			InsecureSkipVerify:true,
 		},
 	}
 	client := http.Client{
@@ -213,7 +214,7 @@ func makeESQueryFromDlaasQuery(in *tds.Query) (es.Query, bool, error) {
 			if err != nil {
 				logr.WithError(err).Errorf(
 					"For now the since argument must be an integer representing " +
-						"the number of milliseconds since midnight January 1, 1970")
+					"the number of milliseconds since midnight January 1, 1970")
 				return nil, false, err
 			}
 		} else if in.Meta.Time != 0 {
@@ -238,7 +239,7 @@ func makeESQueryFromDlaasQuery(in *tds.Query) (es.Query, bool, error) {
 					idQuery,
 					es.NewBoolQuery().Filter(
 						es.NewRangeQuery(rindexFieldName).Gte(in.Pos),
-						es.NewRangeQuery(rindexFieldName).Lt(in.Pos+int64(in.Pagesize)),
+						es.NewRangeQuery(rindexFieldName).Lt(in.Pos + int64(in.Pagesize)),
 					),
 				)
 				shouldPostSortProcess = false
@@ -272,7 +273,7 @@ func (c *TrainingDataService) Hello(ctx context.Context, in *tds.Empty) (*tds.He
 	return out, nil
 }
 
-func adjustOffsetPos(pos int) (int, bool) {
+func adjustOffsetPos( pos int ) (int, bool) {
 	isBackward := false
 	if pos < 0 {
 		isBackward = true
@@ -325,7 +326,7 @@ func (c *TrainingDataService) reportTime(logr *logger.LocLoggingEntry,
 	}
 }
 
-func (c *TrainingDataService) executeQuery(index string, query es.Query,
+func  (c *TrainingDataService) executeQuery(index string, query es.Query,
 	isBackward bool, pos int, pagesize int, typ string, postSortProcess bool,
 	dlogr *logger.LocLoggingEntry) (*es.SearchResult, error) {
 	var res *es.SearchResult
@@ -369,7 +370,7 @@ func (c *TrainingDataService) reportOnCluster(method string, logr *logger.LocLog
 }
 
 // GetLogs returns a stream of log line records.
-func (c *TrainingDataService) GetLogs(in *tds.Query, stream tds.TrainingData_GetLogsServer) error {
+func (c *TrainingDataService) GetLogs(in *tds.Query, stream tds.TrainingData_GetLogsServer) (error) {
 	start := time.Now()
 
 	logr := logger.LocLogger(logger.LogServiceBasic(LogkeyTrainingDataService)).
@@ -394,7 +395,7 @@ func (c *TrainingDataService) GetLogs(in *tds.Query, stream tds.TrainingData_Get
 		pagesize = defaultPageSize
 	}
 
-	pos, isBackward := adjustOffsetPos(int(in.Pos))
+	pos, isBackward := adjustOffsetPos( int(in.Pos) )
 
 	res, err := c.executeQuery(indexName, query, isBackward, pos,
 		pagesize, docTypeLog, shouldPostSortProcess, dlogr)
@@ -454,7 +455,7 @@ func (c *TrainingDataService) GetLogs(in *tds.Query, stream tds.TrainingData_Get
 }
 
 // GetEMetrics returns a stream of evaluation metrics records.
-func (c *TrainingDataService) GetEMetrics(in *tds.Query, stream tds.TrainingData_GetEMetricsServer) error {
+func (c *TrainingDataService) GetEMetrics(in *tds.Query, stream tds.TrainingData_GetEMetricsServer) (error) {
 	start := time.Now()
 	logr := logger.LocLogger(logger.LogServiceBasic(LogkeyTrainingDataService)).
 		WithField(logger.LogkeyTrainingID, in.Meta.TrainingId).
@@ -475,7 +476,7 @@ func (c *TrainingDataService) GetEMetrics(in *tds.Query, stream tds.TrainingData
 		pagesize = defaultPageSize
 	}
 
-	pos, isBackward := adjustOffsetPos(int(in.Pos))
+	pos, isBackward := adjustOffsetPos( int(in.Pos) )
 
 	dlogr.Debugf("pos: %d, pagesize: %d isBackward: %t", pos, pagesize, isBackward)
 
@@ -506,7 +507,7 @@ func (c *TrainingDataService) GetEMetrics(in *tds.Query, stream tds.TrainingData
 			}
 			dlogr.Debugf("Sending record with rindex %v, time %v",
 				emetricsRecord.Meta.Rindex,
-				emetricsRecord.Meta.Time)
+					emetricsRecord.Meta.Time)
 
 			err = stream.Send(emetricsRecord)
 			if err != nil {
@@ -776,6 +777,7 @@ func (c *TrainingDataService) AddLogLineBatch(ctx context.Context,
 	return out, err
 }
 
+
 // DeleteEMetrics deletes the queried evaluation metrics from storage.
 func (c *TrainingDataService) DeleteEMetrics(ctx context.Context, in *tds.Query) (*tds.DeleteResponse, error) {
 	logr := logger.LocLogger(logger.LogServiceBasic(LogkeyTrainingDataService)).
@@ -871,6 +873,7 @@ func (c *TrainingDataService) DeleteJob(ctx context.Context, in *tds.Query) (*td
 	return out, err
 }
 
+
 // ======================================
 
 func createIndexWithLogsIfDoesNotExist(ctx context.Context, client *es.Client) error {
@@ -894,7 +897,7 @@ func createIndexWithLogsIfDoesNotExist(ctx context.Context, client *es.Client) e
 		}
 
 		logr.Infof("Maintaining index: %s", mainIndex)
-		return nil
+		 return nil
 	}
 
 	logr.Debugf("calling CreateIndex")
@@ -958,3 +961,4 @@ func createIndexWithLogsIfDoesNotExist(ctx context.Context, client *es.Client) e
 	logr.Debugf("function exit")
 	return err
 }
+

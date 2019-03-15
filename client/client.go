@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 package client
 
 import (
@@ -27,6 +28,7 @@ import (
 
 	"github.com/AISphere/ffdl-model-metrics/service/grpc_training_data_v1"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 
 	"github.com/AISphere/ffdl-commons/logger"
 	// "github.com/AISphere/ffdl-model-metrics/service"
@@ -63,6 +65,36 @@ func NewTrainingDataClientFromExisting(tds grpc_training_data_v1.TrainingDataCli
 	return &trainerStatusClient{
 		conn:   nil,
 		client: tds,
+	}, nil
+}
+
+// TrainingDataWithDialAddress creates a new client given a dial address.
+// The dial address can also be a kube dns name
+func TrainingDataWithDialAddress(dialAddr, caPath, serverName string) (TrainingDataClient, error) {
+	var opts []grpc.DialOption
+	if caPath != "" {
+		creds, err := credentials.NewClientTLSFromFile(caPath, serverName)
+		if err != nil {
+			return nil, err
+		}
+		opts = []grpc.DialOption{
+			grpc.WithTransportCredentials(creds),
+			grpc.WithBlock(),
+		}
+	} else {
+		opts = []grpc.DialOption{
+			grpc.WithInsecure(),
+			grpc.WithBlock(),
+		}
+	}
+	conn, err := grpc.Dial(dialAddr, opts...)
+	if err != nil {
+		log.Errorf("Could not connect to training data service: %v", err)
+		return nil, err
+	}
+	return &trainerStatusClient{
+		conn:   conn,
+		client: grpc_training_data_v1.NewTrainingDataClient(conn),
 	}, nil
 }
 

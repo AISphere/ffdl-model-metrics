@@ -14,11 +14,20 @@
 # limitations under the License.
 #
 
-ARG DOCKER_HOST_NAME=registry.ng.bluemix.net
-ARG DOCKER_NAMESPACE=dlaas_dev
-ARG DLAAS_SERVICE_BASE_DOCKER_PATH=${DOCKER_HOST_NAME}/${DOCKER_NAMESPACE}
-ARG DLAAS_SERVICE_BASE_IMAGE_TAG=ubuntu16.04
-FROM ${DLAAS_SERVICE_BASE_DOCKER_PATH}/ffdl-service-base:${DLAAS_SERVICE_BASE_IMAGE_TAG}
+
+FROM ubuntu:16.04
+
+ENV DEBIAN_FRONTEND noninteractive
+
+ENV pkgDeps='zip curl make wget apparmor libsystemd0 systemd apt-transport-https ca-certificates openssh-client git-core libltdl7 expect software-properties-common protobuf-compiler golang-goprotobuf-dev jq ldnsutils'
+
+# Dependencies
+RUN apt-get update \
+                && apt-get install -y $pkgDeps --no-install-recommends --force-yes \
+                && rm -rf /var/lib/apt/lists/*
+
+ADD build/grpc-health-checker/bin/grpc-health-checker /usr/local/bin/
+RUN chmod +x /usr/local/bin/grpc-health-checker
 
 ADD bin/main /main
 RUN chmod 755 /main
