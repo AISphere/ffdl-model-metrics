@@ -1,8 +1,8 @@
 hash: 7b849d421e2944f6f99d25b85b7767e66176615008da0eb16960dfefc732df9c
-updated: 2019-02-15T09:34:58.852982-05:00
+updated: 2019-03-17T13:23:29.52432-04:00
 imports:
 - name: github.com/AISphere/ffdl-commons
-  version: d1a8d0c443c5ab4f07a2ef0ed4538971b740e2c6
+  version: 0d63b4719f44077ea70021b2f95c9e00f3f8507d
   repo: https://github.com/sboagibm/ffdl-commons.git
   subpackages:
   - config
@@ -16,9 +16,9 @@ imports:
 - name: github.com/alecthomas/units
   version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
 - name: github.com/fsnotify/fsnotify
-  version: ccc981bf80385c528a65fbfdd49bf2d8da22aa23
+  version: 4da3e2cfbabc9f751898f250b49f2439785783a1
 - name: github.com/golang/protobuf
-  version: aa810b61a9c79d51363740d207bb46cf8e620ed5
+  version: b5d812f8a3706043e23a9cd5babf2e5423744d30
   subpackages:
   - proto
   - ptypes
@@ -26,7 +26,7 @@ imports:
   - ptypes/duration
   - ptypes/timestamp
 - name: github.com/hashicorp/hcl
-  version: 65a6292f0157eff210d03ed1bf6c59b190b8b906
+  version: 42e33e2d55a0ff1d6263f738896ea8c13571a8d0
   subpackages:
   - hcl/ast
   - hcl/parser
@@ -37,10 +37,12 @@ imports:
   - json/parser
   - json/scanner
   - json/token
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/konsorten/go-windows-terminal-sequences
   version: 5c8c8bd35d3832f5d134ae1e1e375b69a4d25242
 - name: github.com/magiconair/properties
-  version: 7c38529aac7222391b7a2661365177a97e21b998
+  version: 8d7837e64d3c1ee4e54a880c5a920ab4316fc90a
 - name: github.com/mailru/easyjson
   version: 2f5df55504ebc322e4d52d34df6a1f5b503bf26d
   subpackages:
@@ -48,34 +50,34 @@ imports:
   - jlexer
   - jwriter
 - name: github.com/mitchellh/mapstructure
-  version: 3536a929edddb9a5b34bd6861dc4a9647cb459fe
+  version: d0303fe809921458f417bcf828397a65db30a7e4
 - name: github.com/olivere/elastic
   version: 2220b205e6d33a5752daed9b63dbb51b40c5e364
   subpackages:
   - config
   - uritemplates
 - name: github.com/pelletier/go-toml
-  version: 27c6b39a135b7dc87a14afb068809132fb7a9a8f
+  version: 2009e44b6f182e34d8ce081ac2767622937ea3d4
 - name: github.com/pkg/errors
   version: ffb6e22f01932bf7ac35e0bad9be11f01d1c8685
 - name: github.com/sirupsen/logrus
   version: ad15b42461921f1fb3529b058c6786c6a45d5162
 - name: github.com/spf13/afero
-  version: a5d6946387efe7d64d09dcba68cdd523dc1273a3
+  version: e67d870304c4bca21331b02f414f970df13aa694
   subpackages:
   - mem
 - name: github.com/spf13/cast
-  version: 8c9545af88b134710ab1cd196795e7f2388358d7
+  version: acbeb36b902d72a7a4c18e8f3241075e7ab763e4
 - name: github.com/spf13/cobra
   version: ef82de70bb3f60c65fb8eebacbb2d122ef517385
   subpackages:
   - cobra/cobra
 - name: github.com/spf13/jwalterweatherman
-  version: 94f6ae3ed3bceceafa716478c5fbf8d29ca601a1
+  version: 12bd96e66386c1960ab0f74ced1362f66f552f7b
 - name: github.com/spf13/pflag
   version: 583c0c0531f06d5278b7d917446061adc344b5cd
 - name: github.com/spf13/viper
-  version: 6d33b5a963d922d182c91e8a1c88d81fd150cfd4
+  version: 9e56dacc08fbbf8c9ee2dbc717553c758ce42bc9
 - name: golang.org/x/crypto
   version: 9419663f5a44be8b34ca85f08abc5fe1be11f8a3
   subpackages:
@@ -107,7 +109,7 @@ imports:
   subpackages:
   - googleapis/rpc/status
 - name: google.golang.org/grpc
-  version: a02b0774206b209466313a0b525d2c738fe407eb
+  version: 2fdaae294f38ed9a121193c51ec99fecd3b13eb7
   subpackages:
   - balancer
   - balancer/base
@@ -144,7 +146,7 @@ imports:
 - name: gopkg.in/olivere/elastic.v5
   version: 407a1d940dcc89e279c579eb393d0bdde8fd9ac4
 - name: gopkg.in/yaml.v2
-  version: 53feefa2559fb8dfa8d81baad31be332c97d6c77
+  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f
 testImports:
 - name: github.com/davecgh/go-spew
   version: 782f4967f2dc4564575ca782fe2d04090b5faca8

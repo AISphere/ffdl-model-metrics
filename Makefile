@@ -20,9 +20,14 @@ include ../ffdl-commons/ffdl-commons.mk
 
 protoc: protoc-trainer protoc-lcm      ## Build gRPC .proto files into vendor directory
 
-install-deps: install-deps-base protoc ## Remove vendor directory, rebuild dependencies
+build-health-checker-deps: clean-health-checker-builds
+	mkdir build
+	cp -r vendor/github.com/AISphere/ffdl-commons/grpc-health-checker build/
+	cd build/grpc-health-checker && make build-x86-64
 
-glide-update: glide-update-base        ## Run full glide rebuild
+install-deps: build-health-checker-deps install-deps-base protoc ## Remove vendor directory, rebuild dependencies
+
+glide-update: build-health-checker-deps glide-update-base protoc       ## Run full glide rebuild
 
 docker-build-log-collectors:                        ## Make docker-build for all log-collectors
 	$(MAKE) -C ./log_collectors/emetrics_file docker-build
@@ -46,5 +51,10 @@ docker-push: docker-push-base  docker-push-log-collectors        ## Push docker 
 
 build-service-only: docker-build-service docker-push  ## Only build service, not log-collectors
 
-clean: clean-base                      ## Clean all build artifacts
+clean-health-checker-builds:
+	rm -rf ./build
+	rm -rf ./controller/build
+	rm -rf ./jmbuild/build
+
+clean: clean-base clean-health-checker-builds                      ## Clean all build artifacts
 	rm -rf certs
