@@ -7,7 +7,7 @@ from log_collectors.training_data_service_client import training_data_pb2_grpc a
 
 
 def get_connection()->td.TrainingDataStub:
-    with open('log_collectors/training_data_service_client/certs/server.crt') as f:
+    with open('/etc/ssl/dlaas/server.crt') as f:
         certificate = f.read()
 
     credentials = grpc.ssl_channel_credentials(root_certificates=certificate)
@@ -20,8 +20,11 @@ def get_connection()->td.TrainingDataStub:
         host_url = '127.0.0.1'
         port = '30015'
     else:
+        training_data_service_name = "ffdl-trainingdata"
+        if "TRAINING_DATA_SERVICE_NAME" in os.environ:
+            training_data_service_name = os.environ["TRAINING_DATA_SERVICE_NAME"]
         training_data_namespace = os.environ["TRAINING_DATA_NAMESPACE"]
-        host_url = "ffdl-trainingdata.%s.svc.cluster.local" % training_data_namespace
+        host_url = "%s.%s.svc.cluster.local" % (training_data_service_name, training_data_namespace)
         port = '80'
 
     host_url = '{}:{}'.format(host_url, port)

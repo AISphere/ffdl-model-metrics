@@ -1,5 +1,5 @@
 /*
- * Copyright 2018. IBM Corporation
+ * Copyright 2017-2018 IBM Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import (
 
 	"github.com/AISphere/ffdl-commons/config"
 	"github.com/AISphere/ffdl-commons/logger"
+	"github.com/AISphere/ffdl-lcm/service"
 	"golang.org/x/net/context"
 	tds "github.com/AISphere/ffdl-model-metrics/service/grpc_training_data_v1"
 	es "gopkg.in/olivere/elastic.v5"
@@ -97,14 +98,14 @@ var (
 // Service represents the functionality of the training status service
 type Service interface {
 	tds.TrainingDataServer
-	LifecycleHandler
+	service.LifecycleHandler
 }
 
 // TrainingDataService holds the in-memory service context.
 type TrainingDataService struct {
 	es  *es.Client
 	esBulkProcessor *es.BulkProcessor
-	Lifecycle
+	service.Lifecycle
 }
 
 func makeDebugLogger(logrr *logrus.Entry, isEnabled bool) *logger.LocLoggingEntry {
@@ -504,7 +505,7 @@ func (c *TrainingDataService) GetEMetrics(in *tds.Query, stream tds.TrainingData
 				logr.WithError(err).Errorf("Unmarshal from ES failed!")
 				return err
 			}
-			dlogr.Debugf("Sending record with rindex %d, time %v",
+			dlogr.Debugf("Sending record with rindex %v, time %v",
 				emetricsRecord.Meta.Rindex,
 					emetricsRecord.Meta.Time)
 
@@ -878,7 +879,7 @@ func (c *TrainingDataService) DeleteJob(ctx context.Context, in *tds.Query) (*td
 func createIndexWithLogsIfDoesNotExist(ctx context.Context, client *es.Client) error {
 	logr := logger.LocLogger(logger.LogServiceBasic(LogkeyTrainingDataService))
 	logr.Debugf("function entry")
-	
+
 	mainIndex := indexNameV1
 
 	logr.Infof("calling IndexExists for %s", mainIndex)

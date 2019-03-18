@@ -18,7 +18,12 @@ FROM ubuntu:16.04
 
 # TODO: Just use community Python 3.6 image per conversation with Atin.
 
-RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common
+ENV pkgDeps='zip curl make wget apparmor libsystemd0 systemd apt-transport-https ca-certificates openssh-client git-core libltdl7 expect software-properties-common protobuf-compiler golang-goprotobuf-dev jq ldnsutils'
+
+# Dependencies
+RUN apt-get update \
+                && apt-get install -y $pkgDeps --no-install-recommends --force-yes \
+                && rm -rf /var/lib/apt/lists/*
 
 RUN add-apt-repository ppa:deadsnakes/ppa
 # runtime dependencies
@@ -38,8 +43,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     make \
     musl-dev \
     "python3.6" \
-    python3-pip \
-	cron
+    python3-pip
 
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 3

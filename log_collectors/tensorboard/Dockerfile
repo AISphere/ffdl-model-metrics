@@ -18,7 +18,12 @@
 FROM tensorflow/tensorflow:1.5.0-py3
 LABEL maintainer="Scott Boag <scott_boag@us.ibm.com>"
 
-RUN apt-get update && apt-get install -y --no-install-recommends cron
+ENV pkgDeps='cron zip curl make wget apparmor libsystemd0 systemd apt-transport-https ca-certificates openssh-client git-core libltdl7 expect software-properties-common protobuf-compiler golang-goprotobuf-dev jq ldnsutils'
+
+# Dependencies
+RUN apt-get update \
+                && apt-get install -y $pkgDeps --no-install-recommends --force-yes \
+                && rm -rf /var/lib/apt/lists/*
 
 #install Keras
 RUN pip3 install keras h5py tensor2tensor

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018. IBM Corporation
+ * Copyright 2017-2018 IBM Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 package client
 
 import (
@@ -27,6 +28,7 @@ import (
 
 	"github.com/AISphere/ffdl-model-metrics/service/grpc_training_data_v1"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 
 	"github.com/AISphere/ffdl-commons/logger"
 	// "github.com/AISphere/ffdl-model-metrics/service"
@@ -66,6 +68,36 @@ func NewTrainingDataClientFromExisting(tds grpc_training_data_v1.TrainingDataCli
 	}, nil
 }
 
+// TrainingDataWithDialAddress creates a new client given a dial address.
+// The dial address can also be a kube dns name
+func TrainingDataWithDialAddress(dialAddr, caPath, serverName string) (TrainingDataClient, error) {
+	var opts []grpc.DialOption
+	if caPath != "" {
+		creds, err := credentials.NewClientTLSFromFile(caPath, serverName)
+		if err != nil {
+			return nil, err
+		}
+		opts = []grpc.DialOption{
+			grpc.WithTransportCredentials(creds),
+			grpc.WithBlock(),
+		}
+	} else {
+		opts = []grpc.DialOption{
+			grpc.WithInsecure(),
+			grpc.WithBlock(),
+		}
+	}
+	conn, err := grpc.Dial(dialAddr, opts...)
+	if err != nil {
+		log.Errorf("Could not connect to training data service: %v", err)
+		return nil, err
+	}
+	return &trainerStatusClient{
+		conn:   conn,
+		client: grpc_training_data_v1.NewTrainingDataClient(conn),
+	}, nil
+}
+
 // NewTrainingDataClientWithAddress create a new load-balanced client to talk to the training metrics
 // service. If the dns_server config option is set to 'disabled', it will
 // default to the pre-defined LocalPort of the service.
@@ -79,7 +111,7 @@ func NewTrainingDataClientWithAddress(addr string) (TrainingDataClient, error) {
 		address = addr
 		logr.Debugf("DNS disabled: Running passed in address: %v", address)
 	} else {
-		address = fmt.Sprintf("%s.%s.svc.cluster.local:80", config.GetValue(config.TdsServiceName), config.GetPodNamespace())
+		address = fmt.Sprintf("%s.%s.svc.cluster.local:80", config.GetTDSServiceName(), config.GetPodNamespace())
 		logr.Debugf("ffdl-trainingdata address: %v", address)
 	}
 	logr.Debugf("IsTLSEnabled: %t", config.IsTLSEnabled())

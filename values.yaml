@@ -22,5 +22,6 @@ elasticsearch:
   username: test
   password: test
   scheme: http
+  ssl_cert: test
 log:
   level: INFO

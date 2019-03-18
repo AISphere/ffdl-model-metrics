@@ -31,6 +31,7 @@ from typing import Dict, Callable, Any, Tuple
 
 from log_collectors.training_data_service_client import extract_datetime as extract_datetime
 from log_collectors.training_data_service_client import training_data_buffered as tdb
+from log_collectors.training_data_service_client import emetrics_to_emetrics2 as em2
 
 from . import push_log_line
 from . import connect
@@ -176,6 +177,10 @@ class GetAndPushLogLinesRunner(threading.Thread):
                         self.logger.info("time since shutdown start: %f, Flushing GetAndPushLogLinesRunner with force: %s",
                                      elapsed_time_since_shutdown, self.log_file)
 
+                        self.logger.info("Sending EOF record")
+                        eof_record = \
+                            em2.make_eof_record(os.environ["TRAINING_ID"], self.subdir, self.record_index)
+                        self.td_client.AddEMetrics(eof_record)
                         self.td_client.flush_maybe(force=True)
 
                         time.sleep(states.SLEEP_BEFORE_LC_DONE)
@@ -213,6 +218,7 @@ class GetAndPushLogLinesRunner(threading.Thread):
             # Note since we signaled, we won't actually wait n seconds, the
             # job monitor will delete us.
             time.sleep(states.SLEEP_BEFORE_EXIT_TIME)
+
             self.logger.info("Exiting GetAndPushLogLinesRunner: %s", self.log_file)
 
 

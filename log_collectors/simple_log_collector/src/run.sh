@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2018 IBM Corporation
+# Copyright 2017-2018 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 
 export LEARNER_ID=$((${DOWNWARD_API_POD_NAME##*-} + 1)) ;
 echo "* * * * * AWS_ACCESS_KEY_ID=$RESULT_STORE_USERNAME AWS_SECRET_ACCESS_KEY=$RESULT_STORE_APIKEY \

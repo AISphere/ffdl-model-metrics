@@ -26,7 +26,7 @@ spec:
 {{ if ne .Values.env "dev" }}
       - name: "elasticsearch-ssl-cert"
         secret:
-          secretName: trainingdata-secrets
+          secretName: training-data-secrets
           items: [{
             key: DLAAS_ELASTICSEARCH_CERT,
             path: elasticsearch/elasticsearch.cert
@@ -58,17 +58,17 @@ spec:
         - name: DLAAS_ELASTICSEARCH_ADDRESS
           valueFrom:
             secretKeyRef:
-              name: trainingdata-secrets
+              name: training-data-secrets
               key: DLAAS_ELASTICSEARCH_ADDRESS
         - name: DLAAS_ELASTICSEARCH_USERNAME
           valueFrom:
             secretKeyRef:
-              name: trainingdata-secrets
+              name: training-data-secrets
               key: DLAAS_ELASTICSEARCH_USERNAME
         - name: DLAAS_ELASTICSEARCH_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: trainingdata-secrets
+              name: training-data-secrets
               key: DLAAS_ELASTICSEARCH_PASSWORD
 {{ end }}
         volumeMounts:

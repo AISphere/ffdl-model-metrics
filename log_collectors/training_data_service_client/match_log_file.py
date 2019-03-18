@@ -5,6 +5,7 @@ LOGFILE_DEFAULT_NAME = "training-log.txt"
 LOGFILE_ALT1_NAME = "user_log.txt"
 
 EMETRICS_FILE_BASE_NAME = "evaluation-metrics.txt"
+EMETRICS2_FILE_BASE_NAME = "emetrics_2_0_0.txt"
 
 # This is experimental, and for now I'm hard coding it.  Once settled,
 # we'll allow this array to be set by the manifest.
